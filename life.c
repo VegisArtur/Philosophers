@@ -38,18 +38,17 @@ static void	eating(t_philo *philo)
 	pthread_mutex_unlock(philo->r_fork);
 }
 
+// Function to check if the philosopher is dead or not
 int	death_loop(t_philo *philo)
 {
 	pthread_mutex_lock(philo->death_lock);
-	if (*philo->dead == 1)
-	{
-		pthread_mutex_unlock(philo->death_lock);
-		return (1);
-	}
+	if (*philo->terminate == 1)
+		return (pthread_mutex_unlock(philo->death_lock), 1);
 	pthread_mutex_unlock(philo->death_lock);
 	return (0);
 }
 
+// Function that loops the life of a philosopher
 void	*philo_life(void *arg)
 {
 	t_philo	*philo;

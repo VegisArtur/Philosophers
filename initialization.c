@@ -32,7 +32,7 @@ void	init_philos(t_rt *rt, t_philo *philos, char **argv)
 		philos[i].write_lock = &rt->write_lock;
 		philos[i].death_lock = &rt->death_lock;
 		philos[i].eat_lock = &rt->eat_lock;
-		philos[i].dead = &rt->dead;
+		philos[i].terminate = &rt->terminate;
 		philos[i].l_fork = &rt->forks[i];
 		if (i == 0)
 			philos[i].r_fork = &rt->forks[count - 1];
@@ -63,6 +63,6 @@ void	init_runtime(t_rt *rt, t_philo *philos, pthread_mutex_t *forks)
 	pthread_mutex_init(&rt->eat_lock, NULL);
 	rt->philos = philos;
 	rt->forks = forks;
-	rt->dead = 0;
+	rt->terminate = 0;
 	return ;
 }

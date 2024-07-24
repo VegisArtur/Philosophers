@@ -19,7 +19,7 @@ typedef struct	s_philo
 	size_t			start_time;
 	int				philo_count;
 	int				eat_count;
-	int				*dead;
+	int				*terminate;
 	pthread_mutex_t	*r_fork;
 	pthread_mutex_t	*l_fork;
 	pthread_mutex_t	*death_lock;
@@ -34,7 +34,7 @@ typedef struct	s_rt
 	pthread_mutex_t	eat_lock;
 	pthread_mutex_t	*forks;
 	t_philo			*philos;
-	int				dead;
+	int				terminate;
 }	t_rt;
 
 // Initialization

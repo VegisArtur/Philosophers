@@ -1,21 +1,6 @@
 #include "philosophers.h"
 #include <limits.h>
 
-size_t	ft_strlen(const char *str)
-{
-	size_t	size;
-
-	if (str == NULL || *str == 0)
-		return (0);
-	size = 0;
-	while (*str != 0)
-	{
-		size++;
-		str++;
-	}
-	return (size);
-}
-
 int	ft_isdigit(unsigned char c)
 {
 	return (c >= '0' && c <= '9');
