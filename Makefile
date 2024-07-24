@@ -1,7 +1,8 @@
 CC			=	cc
 CFLAGS		=	-Wall -Werror -Wextra -g -pthread
 NAME		=	philosophers
-SRC			=	main.c	initialization.c	utils.c
+SRC			=	main.c		initialization.c	utils.c			life.c	\
+				monitor.c	error_and_free.c	thread_loop.c
 OBJ			=	$(SRC:.c=.o)
 
 all: $(NAME)

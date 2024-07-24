@@ -1,5 +1,6 @@
 #include "philosophers.h"
 
+// initialization of arguments into philosophers
 static void	init_argv(t_philo *philo, char **argv)
 {
 	philo->philo_count = ft_atoi(argv[1]);
@@ -13,8 +14,7 @@ static void	init_argv(t_philo *philo, char **argv)
 }
 
 // Initialization of philoisophers one by one
-void	init_philos(t_rt *rt, t_philo *philos,
-		pthread_mutex_t *forks, char **argv)
+void	init_philos(t_rt *rt, t_philo *philos, char **argv)
 {
 	int count;
 	int	i;
@@ -23,7 +23,7 @@ void	init_philos(t_rt *rt, t_philo *philos,
 	i = 0;
 	while (i < count)
 	{
-		init_argv(&philos, argv);
+		init_argv(&philos[i], argv);
 		philos[i].id = i + 1;
 		philos[i].eating = 0;
 		philos[i].meals_eaten = 0;
@@ -33,24 +33,13 @@ void	init_philos(t_rt *rt, t_philo *philos,
 		philos[i].death_lock = &rt->death_lock;
 		philos[i].eat_lock = &rt->eat_lock;
 		philos[i].dead = &rt->dead;
-		philos[i].l_fork = &forks[i];
+		philos[i].l_fork = &rt->forks[i];
 		if (i == 0)
-			philos[i].r_fork = &forks[philos[i].philo_count - 1];
+			philos[i].r_fork = &rt->forks[count - 1];
 		else
-			philos[i].r_fork = &forks[i - 1];
+			philos[i].r_fork = &rt->forks[i - 1];
 		i++;
 	}
-}
-
-// Runtime initialization
-void	init_runtime(t_rt *rt, t_philo *philos)
-{
-	pthread_mutex_init(&rt->death_lock, NULL);
-	pthread_mutex_init(&rt->write_lock, NULL);
-	pthread_mutex_init(&rt->eat_lock, NULL);
-	rt->philos = philos;
-	rt->dead = 0;
-	return ;
 }
 
 // Initialization of forks
@@ -64,4 +53,16 @@ void	init_forks(pthread_mutex_t *forks, int count)
 		pthread_mutex_init(&forks[i], NULL);
 		i++;
 	}
+}
+
+// Runtime initialization
+void	init_runtime(t_rt *rt, t_philo *philos, pthread_mutex_t *forks)
+{
+	pthread_mutex_init(&rt->death_lock, NULL);
+	pthread_mutex_init(&rt->write_lock, NULL);
+	pthread_mutex_init(&rt->eat_lock, NULL);
+	rt->philos = philos;
+	rt->forks = forks;
+	rt->dead = 0;
+	return ;
 }
