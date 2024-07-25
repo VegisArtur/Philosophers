@@ -18,12 +18,12 @@ static void	eating(t_philo *philo)
 {
 	pthread_mutex_lock(philo->r_fork);
 	print_message("has taken a fork", philo);
-	if (philo->philo_count == 1)
-	{
-		ft_usleep(philo->time_die);
-		pthread_mutex_unlock(philo->r_fork);
-		return ;
-	}
+	// if (philo->philo_count == 1)
+	// {
+	// 	ft_usleep(philo->time_die);
+	// 	pthread_mutex_unlock(philo->r_fork);
+	// 	return ;
+	// }
 	pthread_mutex_lock(philo->l_fork);
 	print_message("has taken a fork", philo);
 	philo->eating = 1;
@@ -56,11 +56,24 @@ void	*philo_life(void *arg)
 	philo = (t_philo *)arg;
 	if (philo->id % 2 == 0)
 		ft_usleep(1);
-	while (!death_loop(philo))
+	if (philo->philo_count == 1)
 	{
-		eating(philo);
-		sleeping(philo);
-		thinking(philo);
+		while (!death_loop(philo))
+		{
+			pthread_mutex_lock(philo->r_fork);
+			print_message("has taken a fork", philo);
+			ft_usleep(philo->time_die);
+			pthread_mutex_unlock(philo->r_fork);
+			sleeping(philo);
+			thinking(philo);
+		}
 	}
+	else
+		while (!death_loop(philo))
+		{
+			eating(philo);
+			sleeping(philo);
+			thinking(philo);
+		}
 	return (arg);
 }
