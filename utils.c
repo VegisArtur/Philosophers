@@ -47,7 +47,7 @@ int	ft_atoi(const char *str)
 }
 
 // helper function to make sure nothing interrupts the philo program
-int	ft_usleep(size_t milliseconds)
+int	precision_usleep(size_t milliseconds)
 {
 	size_t	start;
 

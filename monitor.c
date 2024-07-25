@@ -13,7 +13,7 @@ void	print_message(char *str, t_philo *philo)
 }
 
 // Checks if the philosopher is dead
-static int	philosopher_dead(t_philo *philo, size_t time_die)
+static int	is_philosopher_dead(t_philo *philo, size_t time_die)
 {
 	pthread_mutex_lock(philo->eat_lock);
 	if (get_current_time() - philo->last_meal >= time_die
@@ -31,7 +31,7 @@ static int	check_if_dead(t_philo *philos)
 	i = 0;
 	while (i < philos[0].philo_count)
 	{
-		if (philosopher_dead(&philos[i], philos[i].time_die))
+		if (is_philosopher_dead(&philos[i], philos[i].time_die))
 		{
 			print_message("died", &philos[i]);
 			pthread_mutex_lock(philos[0].death_lock);
