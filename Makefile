@@ -1,4 +1,4 @@
-CC			=	cc
+CC			=	gcc
 CFLAGS		=	-Wall -Werror -Wextra -g -pthread
 NAME		=	philosophers
 SRC			=	main.c		initialization.c	utils.c			life.c	\

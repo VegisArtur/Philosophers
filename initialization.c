@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   initialization.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: avegis <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/07/29 12:51:46 by avegis            #+#    #+#             */
+/*   Updated: 2024/07/29 12:51:52 by avegis           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philosophers.h"
 
 // initialization of arguments into philosophers
@@ -16,7 +28,7 @@ static void	init_argv(t_philo *philo, char **argv)
 // Initialization of philoisophers one by one
 void	init_philos(t_rt *rt, t_philo *philos, char **argv)
 {
-	int count;
+	int	count;
 	int	i;
 
 	count = ft_atoi(argv[1]);
@@ -32,6 +44,7 @@ void	init_philos(t_rt *rt, t_philo *philos, char **argv)
 		philos[i].write_lock = &rt->write_lock;
 		philos[i].death_lock = &rt->death_lock;
 		philos[i].eat_lock = &rt->eat_lock;
+		philos[i].begin_lock = &rt->begin_lock;
 		philos[i].terminate = &rt->terminate;
 		philos[i].l_fork = &rt->forks[i];
 		if (i == 0)
@@ -61,6 +74,7 @@ void	init_runtime(t_rt *rt, t_philo *philos, pthread_mutex_t *forks)
 	pthread_mutex_init(&rt->death_lock, NULL);
 	pthread_mutex_init(&rt->write_lock, NULL);
 	pthread_mutex_init(&rt->eat_lock, NULL);
+	pthread_mutex_init(&rt->begin_lock, NULL);
 	rt->philos = philos;
 	rt->forks = forks;
 	rt->terminate = 0;

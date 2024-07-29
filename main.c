@@ -1,12 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: avegis <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/07/29 12:52:09 by avegis            #+#    #+#             */
+/*   Updated: 2024/07/29 12:52:10 by avegis           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philosophers.h"
 
-static int  check_arguments(int argc, char **argv)
+static int	check_arguments(int argc, char **argv)
 {
 	if (argc < 5 || argc > 6)
 	{
 		write(2, "Invalid number of arguments!\n", 30);
-		write(2, "Arguments are >>> count, starve, eat, sleep, (lifetime)\n", 57);
-		write(2, "Try 5 800 200 200 (7)\n", 21);
+		write(2, "Arguments are > count, starve, eat, sleep, (lifetime)\n", 55);
+		write(2, "Try 5 800 200 200 (7)\n", 23);
 		return (1);
 	}
 	argc = 1;
@@ -28,7 +40,7 @@ static int  check_arguments(int argc, char **argv)
 	return (0);
 }
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
 	t_rt			runtime;
 	t_philo			*philos;

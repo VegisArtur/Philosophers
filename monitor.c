@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   monitor.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: avegis <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/07/29 12:52:17 by avegis            #+#    #+#             */
+/*   Updated: 2024/07/29 12:52:21 by avegis           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philosophers.h"
 
 // Print message funtion
@@ -18,7 +30,10 @@ static int	is_philosopher_dead(t_philo *philo, size_t time_die)
 	pthread_mutex_lock(philo->eat_lock);
 	if (get_current_time() - philo->last_meal >= time_die
 		&& philo->eating == 0)
-		return (pthread_mutex_unlock(philo->eat_lock), 1);
+	{
+		pthread_mutex_unlock(philo->eat_lock);
+		return (1);
+	}
 	pthread_mutex_unlock(philo->eat_lock);
 	return (0);
 }
@@ -57,7 +72,7 @@ static int	check_if_all_ate(t_philo *philos)
 	while (i < philos[0].philo_count)
 	{
 		pthread_mutex_lock(philos[i].eat_lock);
-		if (philos[i].meals_eaten >= philos[i].eat_count)
+		if (philos[i].meals_eaten == philos[i].eat_count)
 			finished_eating++;
 		pthread_mutex_unlock(philos[i].eat_lock);
 		i++;

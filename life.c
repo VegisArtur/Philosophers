@@ -1,13 +1,25 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   life.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: avegis <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/07/29 12:56:05 by avegis            #+#    #+#             */
+/*   Updated: 2024/07/29 12:56:07 by avegis           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philosophers.h"
 
 // thinking function
-static void	thinking(t_philo *philo)
+void	thinking(t_philo *philo)
 {
 	print_message("is thinking", philo);
 }
 
 // sleeping function
-static void	sleeping(t_philo *philo)
+void	sleeping(t_philo *philo)
 {
 	print_message("is sleeping", philo);
 	precision_usleep(philo->time_sleep);
@@ -37,7 +49,10 @@ int	death_loop(t_philo *philo)
 {
 	pthread_mutex_lock(philo->death_lock);
 	if (*philo->terminate == 1)
-		return (pthread_mutex_unlock(philo->death_lock), 1);
+	{
+		pthread_mutex_unlock(philo->death_lock);
+		return (1);
+	}
 	pthread_mutex_unlock(philo->death_lock);
 	return (0);
 }
@@ -48,24 +63,20 @@ void	*philo_life(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
+	pthread_mutex_lock(philo->begin_lock);
+	pthread_mutex_unlock(philo->begin_lock);
 	if (philo->id % 2 == 0)
 		precision_usleep(1);
 	if (philo->philo_count == 1)
-		while (!death_loop(philo))
-		{
-			pthread_mutex_lock(philo->r_fork);
-			print_message("has taken a fork", philo);
-			precision_usleep(philo->time_die);
-			pthread_mutex_unlock(philo->r_fork);
-			sleeping(philo);
-			thinking(philo);
-		}
+		single_philo(philo);
 	else
+	{
 		while (!death_loop(philo))
 		{
 			eating(philo);
 			sleeping(philo);
 			thinking(philo);
 		}
+	}
 	return (arg);
 }
