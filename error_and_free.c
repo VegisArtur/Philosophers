@@ -52,7 +52,7 @@ int	create_fail(t_rt *rt, int i, pthread_t obs)
 			printf("A thread failed to join after failed creation\n");
 		if (count > 1)
 		{
-			printf("%i amount of threads failed to join\n", count);
+			printf("%i threads failed to join\n", count);
 			printf("after failed thread creation\n");
 		}
 		cleanse("Detach was used on failed joins\n", rt);

@@ -46,7 +46,7 @@ static int	join_threads(t_rt *rt, pthread_t obs)
 		if (count == 1)
 			printf("A thread failed to join\n");
 		if (count > 1)
-			printf("%i amount of threads failed to join\n", count);
+			printf("%i threads failed to join\n", count);
 		cleanse("Detach was used on failed joins\n", rt);
 		return (1);
 	}
