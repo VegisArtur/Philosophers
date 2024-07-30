@@ -28,22 +28,22 @@ void	single_philo(t_philo *philo)
 // Joining threads for all philos and the observer
 static int	join_threads(t_rt *rt, pthread_t obs)
 {
+	int	count;
 	int	i;
 
+	count = 0;
 	i = 0;
 	if (pthread_join(obs, NULL) != 0)
-	{
-		cleanse("Error joining thread", rt);
-		return (1);
-	}
+		count += join_fail(obs);
 	while (i < rt->philos[0].philo_count)
 	{
 		if (pthread_join(rt->philos[i].thread, NULL) != 0)
-		{
-			cleanse("Error joining thread", rt);
-			return (1);
-		}
+			join_fail(rt->philos[i].thread);
 		i++;
+	}
+	if (count > 0)
+	{
+		cleanse()
 	}
 	return (0);
 }
@@ -66,12 +66,14 @@ int	create_threads(t_rt *rt)
 		if (pthread_create(&rt->philos[i].thread, NULL, &philo_life,
 				&rt->philos[i]) != 0)
 		{
+			create_fail(rt, obs);  // create function
 			cleanse("Error creating thread", rt);
 			return (1);
 		}
 		i++;
 	}
 	pthread_mutex_unlock(&rt->begin_lock);
-	join_threads(rt, obs);
+	if (join_threads(rt, obs) == 1)
+		return (1);
 	return (0);
 }

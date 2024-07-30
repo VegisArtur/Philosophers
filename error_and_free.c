@@ -27,6 +27,12 @@ static size_t	ft_strlen(const char *str)
 	return (size);
 }
 
+void	join_fail(pthread_t thread, int i)
+{
+	pthread_detach(thread);
+	return (1);
+}
+
 void	cleanse(char *str, t_rt *rt)
 {
 	int	i;
