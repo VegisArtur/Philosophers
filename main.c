@@ -60,7 +60,7 @@ int	main(int argc, char **argv)
 	init_runtime(&runtime, philos, forks);
 	init_forks(forks, ft_atoi(argv[1]));
 	init_philos(&runtime, philos, argv);
-	if (create_threads(&runtime) == 1)
+	if (create_threads(&runtime) != 0)
 		return (1);
 	cleanse(NULL, &runtime);
 	return (0);

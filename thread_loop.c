@@ -57,7 +57,7 @@ int	create_threads(t_rt *rt)
 	if (pthread_create(&obs, NULL, &monitor, rt->philos) != 0)
 	{
 		cleanse("Error creating thread", rt);
-		return (1);
+		return (-1);
 	}
 	i = 0;
 	pthread_mutex_lock(&rt->begin_lock);
