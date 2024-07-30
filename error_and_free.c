@@ -27,13 +27,40 @@ static size_t	ft_strlen(const char *str)
 	return (size);
 }
 
-void	join_fail(pthread_t thread, int i)
+int	join_fail(pthread_t thread)
 {
 	pthread_detach(thread);
 	return (1);
 }
 
-void	cleanse(char *str, t_rt *rt)
+int	create_fail(t_rt *rt, int i, pthread_t obs)
+{
+	int	count;
+
+	count = 0;
+	if (pthread_join(obs, NULL) != 0)
+		count += join_fail(obs);
+	while (i > 0)
+	{
+		if (pthread_join(rt->philos[i].thread, NULL) != 0)
+			count += join_fail(rt->philos[i].thread);
+		i--;
+	}
+	if (count > 0)
+	{
+		if (count == 1)
+			printf("A thread failed to join after failed creation\n");
+		if (count > 1)
+		{
+			printf("%i amount of threads failed to join\n", count);
+			printf("after failed thread creation\n");
+		}
+		cleanse("Detach was used on failed joins\n", rt);
+	}
+	return (1);
+}
+
+int	cleanse(char *str, t_rt *rt)
 {
 	int	i;
 
@@ -46,6 +73,7 @@ void	cleanse(char *str, t_rt *rt)
 	pthread_mutex_destroy(&rt->write_lock);
 	pthread_mutex_destroy(&rt->eat_lock);
 	pthread_mutex_destroy(&rt->death_lock);
+	pthread_mutex_destroy(&rt->begin_lock);
 	free(rt->forks);
 	free(rt->philos);
 	if (str != NULL)
@@ -53,4 +81,5 @@ void	cleanse(char *str, t_rt *rt)
 		write(2, str, ft_strlen(str));
 		write(2, "\n", 1);
 	}
+	return (1);
 }

@@ -61,7 +61,9 @@ void	single_philo(t_philo *philo);
 int		create_threads(t_rt *rt);
 
 // Error and free
-void	cleanse(char *str, t_rt *rt);
+int		join_fail(pthread_t thread);
+int		create_fail(t_rt *rt, int i, pthread_t obs);
+int		cleanse(char *str, t_rt *rt);
 
 // Monitor thread
 void	*monitor(void *pointer);

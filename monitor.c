@@ -72,7 +72,7 @@ static int	check_if_all_ate(t_philo *philos)
 	while (i < philos[0].philo_count)
 	{
 		pthread_mutex_lock(philos[i].eat_lock);
-		if (philos[i].meals_eaten == philos[i].eat_count)
+		if (philos[i].meals_eaten >= philos[i].eat_count)
 			finished_eating++;
 		pthread_mutex_unlock(philos[i].eat_lock);
 		i++;
@@ -93,6 +93,13 @@ void	*monitor(void *pointer)
 	t_philo	*philos;
 
 	philos = (t_philo *)pointer;
+	pthread_mutex_lock(philos->begin_lock);
+	if (*philos->terminate == 1)
+	{
+		pthread_mutex_unlock(philos->begin_lock);
+		return (pointer);
+	}
+	pthread_mutex_unlock(philos->begin_lock);
 	while (1)
 	{
 		if (check_if_dead(philos) == 1)

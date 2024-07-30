@@ -38,12 +38,17 @@ static int	join_threads(t_rt *rt, pthread_t obs)
 	while (i < rt->philos[0].philo_count)
 	{
 		if (pthread_join(rt->philos[i].thread, NULL) != 0)
-			join_fail(rt->philos[i].thread);
+			count += join_fail(rt->philos[i].thread);
 		i++;
 	}
 	if (count > 0)
 	{
-		cleanse()
+		if (count == 1)
+			printf("A thread failed to join\n");
+		if (count > 1)
+			printf("%i amount of threads failed to join\n", count);
+		cleanse("Detach was used on failed joins\n", rt);
+		return (1);
 	}
 	return (0);
 }
@@ -54,20 +59,17 @@ int	create_threads(t_rt *rt)
 	pthread_t	obs;
 	int			i;
 
-	if (pthread_create(&obs, NULL, &monitor, rt->philos) != 0)
-	{
-		cleanse("Error creating thread", rt);
-		return (-1);
-	}
-	i = 0;
 	pthread_mutex_lock(&rt->begin_lock);
+	if (pthread_create(&obs, NULL, &monitor, rt->philos) != 0)
+		return (cleanse("Error creating thread", rt));
+	i = 0;
 	while (i < rt->philos[0].philo_count)
 	{
 		if (pthread_create(&rt->philos[i].thread, NULL, &philo_life,
 				&rt->philos[i]) != 0)
 		{
-			create_fail(rt, obs);  // create function
-			cleanse("Error creating thread", rt);
+			pthread_mutex_unlock(&rt->begin_lock);
+			create_fail(rt, i, obs);
 			return (1);
 		}
 		i++;

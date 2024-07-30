@@ -64,6 +64,8 @@ void	*philo_life(void *arg)
 
 	philo = (t_philo *)arg;
 	pthread_mutex_lock(philo->begin_lock);
+	if (*philo->terminate == 1)
+		return (arg);
 	pthread_mutex_unlock(philo->begin_lock);
 	if (philo->id % 2 == 0)
 		precision_usleep(1);
@@ -73,9 +75,9 @@ void	*philo_life(void *arg)
 	{
 		while (!death_loop(philo))
 		{
+			thinking(philo);
 			eating(philo);
 			sleeping(philo);
-			thinking(philo);
 		}
 	}
 	return (arg);
