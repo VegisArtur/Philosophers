@@ -28,10 +28,20 @@ void	sleeping(t_philo *philo)
 // eating function
 static void	eating(t_philo *philo)
 {
-	pthread_mutex_lock(philo->r_fork);
-	print_message("has taken a fork", philo);
-	pthread_mutex_lock(philo->l_fork);
-	print_message("has taken a fork", philo);
+	if (philo->id % 2 == 0 && philo->meals_eaten == 0)
+	{
+		pthread_mutex_lock(philo->r_fork);
+		print_message("has taken a fork", philo);
+		pthread_mutex_lock(philo->l_fork);
+		print_message("has taken a fork", philo);
+	}
+	else
+	{
+		pthread_mutex_lock(philo->l_fork);
+		print_message("has taken a fork", philo);
+		pthread_mutex_lock(philo->r_fork);
+		print_message("has taken a fork", philo);
+	}
 	philo->eating = 1;
 	print_message("is eating", philo);
 	pthread_mutex_lock(philo->eat_lock);

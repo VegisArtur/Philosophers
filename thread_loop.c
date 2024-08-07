@@ -25,6 +25,19 @@ void	single_philo(t_philo *philo)
 	}
 }
 
+static void	init_start_time(t_philo *philos)
+{
+	int	i;
+
+	i = 0;
+	while (i < philos[i].philo_count)
+	{
+		philos[i].start_time = get_current_time();
+		philos[i].last_meal = get_current_time();
+		i++;
+	}
+}
+
 // Joining threads for all philos and the observer
 static int	join_threads(t_rt *rt, pthread_t obs)
 {
@@ -74,6 +87,7 @@ int	create_threads(t_rt *rt)
 		}
 		i++;
 	}
+	init_start_time(rt->philos);
 	pthread_mutex_unlock(&rt->begin_lock);
 	if (join_threads(rt, obs) == 1)
 		return (1);
