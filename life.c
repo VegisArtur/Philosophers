@@ -30,7 +30,7 @@ void	sleeping(t_philo *philo)
 // eating function
 static void	eating(t_philo *philo)
 {
-	if (philo->id % 2 == 0 && philo->meals_eaten == 0)
+	if (philo->meals_eaten == 0 && philo->id % 2 == 0)
 	{
 		pthread_mutex_lock(philo->r_fork);
 		print_message("has taken a fork", philo);
