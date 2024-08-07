@@ -16,6 +16,8 @@
 void	thinking(t_philo *philo)
 {
 	print_message("is thinking", philo);
+	if (philo->id % 2 == 0 && philo->meals_eaten == 0)
+		precision_usleep(philo->time_eat / 2);
 }
 
 // sleeping function
@@ -77,8 +79,8 @@ void	*philo_life(void *arg)
 	if (*philo->terminate == 1)
 		return (arg);
 	pthread_mutex_unlock(philo->begin_lock);
-	if (philo->id % 2 == 0)
-		precision_usleep(1);
+	// if (philo->id % 2 == 0)
+	// 	precision_usleep(1);
 	if (philo->philo_count == 1)
 		single_philo(philo);
 	else
